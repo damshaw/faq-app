@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.flex-grid {
+  display: flex;
+  flex-flow: wrap;
+}
+.card {
+  display: flex;
+  flex-grow: 0;
+  justify-content: center;
+  width: 33.3333%;
+}
