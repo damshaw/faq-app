@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.scss";
 import Filter from "./Filter";
 import useFetch from "./hooks/useFetch";
+import Modal from "./components/Modal";
 
 function App({ faqData }) {
   const ROKEBY_CAT_ID = "107,176,108";
@@ -19,6 +20,7 @@ function App({ faqData }) {
   //    setPostsData(`${CAT}=${APP_CAT_ID}&${PER_PAGE}`)
   //   //&tags=169
   //   : setPostsData(`${CAT}=${ROKEBY_CAT_ID}=${TAG}=${APP_CAT_ID}&${PER_PAGE}`);
+  const [isModalOpen, toggleModal] = useState(false);
 
   const API_URL = "https://faqs.madegroup.com/wp-json/wp/v2/posts/?" + PER_PAGE + "&" + CAT + "=" + ROKEBY_CAT_ID;
   const faqIds = faqData;
@@ -45,8 +47,18 @@ function App({ faqData }) {
             //   console.log(res);
             // })
             .map((post) => (
-              <div className="card">
-                <h4>{post.title.rendered}</h4>
+              <div key={post.id} className="card">
+                <div className="inner">
+                  <h3 className="title">{post.title.rendered}</h3>
+                  <div dangerouslySetInnerHTML={{__html: post.excerpt.rendered}} />
+                  <button onClick={() => toggleModal(!isModalOpen)}>Read more</button>
+
+                </div>
+                <Modal isOpen={isModalOpen} toggle={toggleModal}>
+                  <h3 className="title">{post.title.rendered}</h3>
+                  <div dangerouslySetInnerHTML={{__html: post.content.rendered}} />
+                  <button onClick={() => toggleModal(false)}>Close</button>
+                </Modal>
               </div>
             ))}
       </div>
